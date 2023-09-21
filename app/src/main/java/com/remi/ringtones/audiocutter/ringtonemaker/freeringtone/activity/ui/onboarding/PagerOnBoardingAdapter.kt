@@ -3,6 +3,7 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.on
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -52,11 +53,24 @@ class PagerOnBoardingAdapter @Inject constructor() :
     inner class PagerHolder(private val binding: ItemOnBoardingBinding) : ViewHolder(binding.root) {
 
         init {
-
+            binding.ivItem.layoutParams.width = (w * 100f).toInt()
+            if (type == 0) {
+                binding.ctlTip.visibility = View.GONE
+                binding.ctlOnBoarding.visibility = View.VISIBLE
+            } else if (type == 1) {
+                binding.ctlOnBoarding.visibility = View.GONE
+                binding.ctlTip.visibility = View.VISIBLE
+            }
         }
 
         fun onBind(position: Int) {
             val item = lstPage[position]
+
+            if (item.imgPage != -1) binding.ivItem.setImageResource(item.imgPage)
+            if (item.imgIcon != -1) binding.iv.setImageResource(item.imgIcon)
+            binding.tvDes.text = item.str
+            binding.tvDes2.text = item.str
+            binding.tvTitle.text = item.strTitle
         }
     }
 

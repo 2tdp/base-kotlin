@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Music Ringtone</string>
+
+    <string name="save">Sauvegarder</string>
+    <string name="done">Fait</string>
+    <string name="home">Maison</string>
+    <string name="next">Suivant</string>
+    <string name="start">Commencer</string>
+    <string name="customize">Personnaliser</string>
+    <string name="about">À propos</string>
+    <string name="cancel">Annuler</string>
+    <string name="reset">Réinitialiser</string>
+    <string name="str_continue">Continuer</string>
+    <string name="all">Tous</string>
+    <string name="del">Supprimer</string>
+    <string name="share">Partager</string>
+    <string name="preview">Aperçu</string>
+    <string name="copy">Copie</string>
+    <string name="clear">Clair</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="theme">Thème</string>
+    <string name="error">Erreur</string>
+    <string name="confirm">Confirmer</string>
+    <string name="apply">Appliquer</string>
+    <string name="empty">Vide</string>
+    <string name="no_browser">Aucun navigateur</string>
+    <string name="unknown_error_occurred">Une erreur inconnue est survenue</string>
+    <string name="my_gallery">Ma galerie</string>
+
+    <string name="crop">Recadrer</string>
+    <string name="error_crop">Erreur de recadrage</string>
+    <string name="finish">Appuyez encore 1 fois pour sortir</string>
+
+    <string name="channel_name">nmh_notifier</string>
+    <string name="channel_description">Ceci est une notification</string>
+
+    <string name="this_action_can_contain_ads">Cette action peut contenir des annonces</string>
+    <string name="deny_per">Une autorisation est requise pour utiliser cette fonction</string>
+</resources>

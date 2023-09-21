@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Music Ringtone</string>
+
+    <string name="save">बचाना</string>
+    <string name="done">हो गया</string>
+    <string name="home">घर</string>
+    <string name="next">अगला</string>
+    <string name="start">शुरू</string>
+    <string name="customize">अनुकूलित करें</string>
+    <string name="about">के बारे में</string>
+    <string name="cancel">रद्द करना</string>
+    <string name="reset">रीसेट</string>
+    <string name="str_continue">जारी रखना</string>
+    <string name="all">सभी</string>
+    <string name="del">मिटाना</string>
+    <string name="share">शेयर करना</string>
+    <string name="preview">पूर्व दर्शन</string>
+    <string name="copy">प्रतिलिपि</string>
+    <string name="clear">स्पष्ट</string>
+    <string name="yes">हाँ</string>
+    <string name="no">नहीं</string>
+    <string name="theme">विषय</string>
+    <string name="error">गलती</string>
+    <string name="confirm">पुष्टि करना</string>
+    <string name="apply">आवेदन करना</string>
+    <string name="empty">खाली</string>
+    <string name="no_browser">कोई ब्राउज़र नहीं</string>
+    <string name="unknown_error_occurred">एक अज्ञात त्रुटि हुई</string>
+    <string name="my_gallery">मेरी गैलरी</string>
+
+    <string name="crop">काटना</string>
+    <string name="error_crop">त्रुटि फसल</string>
+    <string name="finish">बाहर निकलने के लिए 1 बार और दबाएँ</string>
+
+    <string name="channel_name">nmh_notify</string>
+    <string name="channel_description">यह सूचित है</string>
+
+    <string name="this_action_can_contain_ads">इस क्रिया में विज्ञापन शामिल हो सकते हैं</string>
+    <string name="deny_per">इस फ़ंक्शन का उपयोग करने के लिए अनुमति आवश्यक है</string>
+</resources>

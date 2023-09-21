@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Music Ringtone</string>
+
+    <string name="save">Salvar</string>
+    <string name="done">Feito</string>
+    <string name="home">Lar</string>
+    <string name="next">Próximo</string>
+    <string name="start">Começar</string>
+    <string name="customize">Customizar</string>
+    <string name="about">Sobre</string>
+    <string name="cancel">Cancelar</string>
+    <string name="reset">Reiniciar</string>
+    <string name="str_continue">Continuar</string>
+    <string name="all">Todos</string>
+    <string name="del">Excluir</string>
+    <string name="share">Compartilhar</string>
+    <string name="preview">Visualização</string>
+    <string name="copy">cópia de</string>
+    <string name="clear">Claro</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="theme">Tema</string>
+    <string name="error">Erro</string>
+    <string name="confirm">confirme</string>
+    <string name="apply">Aplicar</string>
+    <string name="empty">Vazio</string>
+    <string name="no_browser">Sem navegador</string>
+    <string name="unknown_error_occurred">Ocorreu um erro desconhecido</string>
+    <string name="my_gallery">My Gallery</string>
+
+    <string name="crop">Cortar</string>
+    <string name="error_crop">Erro de corte</string>
+    <string name="finish">Pressione mais 1 vez para sair</string>
+
+    <string name="channel_name">nmh_notify</string>
+    <string name="channel_description">Isto é notificar</string>
+
+    <string name="this_action_can_contain_ads">Esta ação pode conter anúncios</string>
+    <string name="deny_per">É necessária permissão para usar esta função</string>
+</resources>

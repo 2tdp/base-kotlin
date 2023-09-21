@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "440120608435",
+    "project_id": "app117---findmyphone",
+    "storage_bucket": "app117---findmyphone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:440120608435:android:d7c18d7e4dcb4ab21d52c6",
+        "android_client_info": {
+          "package_name": "com.gpstracker.findmyphone.phonelocator.phonetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "440120608435-6lfjqv9vfsn57q4m6rf7v9mf9l22h52e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUTneFYy-okSutU2byN8CJoiYYG2f0MKE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "440120608435-6lfjqv9vfsn57q4m6rf7v9mf9l22h52e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

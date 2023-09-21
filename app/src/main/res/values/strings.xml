@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Music Ringtone</string>
+
+    <string name="save">Save</string>
+    <string name="done">Done</string>
+    <string name="home">Home</string>
+    <string name="next">Next</string>
+    <string name="start">Start</string>
+    <string name="customize">Customize</string>
+    <string name="about">About</string>
+    <string name="cancel">Cancel</string>
+    <string name="reset">Reset</string>
+    <string name="str_continue">Continue</string>
+    <string name="all">All</string>
+    <string name="del">Delete</string>
+    <string name="share">Share</string>
+    <string name="preview">Preview</string>
+    <string name="copy">Copy</string>
+    <string name="clear">Clear</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="theme">Theme</string>
+    <string name="error">Error</string>
+    <string name="confirm">Confirm</string>
+    <string name="apply">Apply</string>
+    <string name="empty">Empty!</string>
+    <string name="no_browser">No Browser</string>
+    <string name="unknown_error_occurred">An unknown error occurred</string>
+    <string name="my_gallery">My Gallery</string>
+
+    <string name="crop">Crop</string>
+    <string name="error_crop">Error Crop</string>
+    <string name="finish">Press 1 more time to exit</string>
+
+    <string name="channel_name">nmh_notify</string>
+    <string name="channel_description">This is notify</string>
+
+    <string name="this_action_can_contain_ads">This action can contain ads</string>
+    <string name="deny_per">Permission is required to use this function</string>
+
+    //language
+    <string name="language">Language</string>
+    <string name="you_need_pick_a_language">You need pick a language</string>
+</resources>

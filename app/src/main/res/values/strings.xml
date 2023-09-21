@@ -37,8 +37,14 @@
 
     <string name="this_action_can_contain_ads">This action can contain ads</string>
     <string name="deny_per">Permission is required to use this function</string>
+    <string name="deny_pers">Permissions is required to use this application</string>
 
     //language
     <string name="language">Language</string>
     <string name="you_need_pick_a_language">You need pick a language</string>
+
+    //onBoarding
+    <string name="des_onboarding_1"></string>
+    <string name="des_onboarding_2"></string>
+    <string name="des_onboarding_3"></string>
 </resources>

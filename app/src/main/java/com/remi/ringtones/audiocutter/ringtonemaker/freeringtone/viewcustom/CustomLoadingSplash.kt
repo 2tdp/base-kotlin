@@ -11,6 +11,7 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.callback.ICallBackCheck
 
 class CustomLoadingSplash : View {
 
@@ -37,6 +38,8 @@ class CustomLoadingSplash : View {
     private var colorBg = ContextCompat.getColor(context, R.color.black_background)
     private var colorPrs = intArrayOf()
 
+    var isSwipe: ICallBackCheck? = null
+
     init {
         w = resources.displayMetrics.widthPixels / 100f
         radius = 1.11f * w
@@ -46,7 +49,6 @@ class CustomLoadingSplash : View {
             style = Paint.Style.FILL
             strokeJoin = Paint.Join.ROUND
             strokeCap = Paint.Cap.ROUND
-            color = ContextCompat.getColor(context, R.color.main_color)
         }
         paintPr.apply {
             style = Paint.Style.FILL
@@ -71,10 +73,10 @@ class CustomLoadingSplash : View {
 
         //draw bg
         paint.apply {
-            shader = null
+            strokeWidth = sizeBg
             color = colorBg
         }
-        canvas.drawLine(radius, height / 2f, width - radius, height / 2f, paint)
+        canvas.drawLine(radius / 2f, height / 2f, width - radius / 2f, height / 2f, paint)
 
         //draw load
         if (colorPrs.size == 1)
@@ -92,6 +94,11 @@ class CustomLoadingSplash : View {
         paintPr.strokeWidth = sizePos
         val p = (width - radius / 2f) * currentProgress / max + radius / 2f
         canvas.drawLine(radius / 2f, height / 2f, p, height / 2f, paintPr)
+
+        if (currentProgress < 100) {
+            currentProgress++
+            postInvalidateDelayed(15)
+        } else isSwipe?.check(true)
     }
 
     fun setRadius(radius: Float) {

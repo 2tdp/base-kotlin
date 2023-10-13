@@ -12,9 +12,12 @@ import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
@@ -24,6 +27,9 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hide
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setAnimExit
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setStatusBarTransparent
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.showToast
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CHECK_STATE_LANGUAGE
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CURRENT_LANGUAGE
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.viewcustom.CustomLoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +39,7 @@ import kotlin.coroutines.CoroutineContext
 
 abstract class BaseActivity<B : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B
-) : LocalizationActivity(), ActivityView, CoroutineScope {
+) : AppCompatActivity(), ActivityView, CoroutineScope {
 
     private var TAG_LOADING = CustomLoadingDialog::class.java.name
 
@@ -45,6 +51,7 @@ abstract class BaseActivity<B : ViewBinding>(
 
     val binding: B by lazy { bindingFactory(layoutInflater) }
 
+    private lateinit var decorView: View
     private var finish = 0
     private var mIsShowLoading = false
 
@@ -52,12 +59,31 @@ abstract class BaseActivity<B : ViewBinding>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStatusBarTransparent(this@BaseActivity, isVisible(), getColorState()[0], getColorState()[1])
+        decorView = window.decorView
+        if (!isHideNavigation())
+            setStatusBarTransparent(this@BaseActivity, isVisible(), getColorState()[0], getColorState()[1])
+        else {
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            window.navigationBarColor = Color.parseColor("#01ffffff")
+            window.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility = hideSystemBars()
+        }
         job = Job()
         setContentView(binding.root)
         w = resources.displayMetrics.widthPixels / 100F
 
         setUp()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (!DataLocalManager.getCheck(CHECK_STATE_LANGUAGE)) {
+            DataLocalManager.getLanguage(CURRENT_LANGUAGE)?.let {
+                DataLocalManager.setCheck(CHECK_STATE_LANGUAGE, true)
+                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(it.locale))
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -77,13 +103,29 @@ abstract class BaseActivity<B : ViewBinding>(
         return true
     }
 
+    protected open fun isHideNavigation(): Boolean {
+        return false
+    }
+
     protected abstract fun setUp()
+
+    private fun hideSystemBars(): Int {
+        return (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
 
     override fun startIntent(nameActivity: String, isFinish: Boolean) {
         val intent = Intent()
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.component = ComponentName(this, nameActivity)
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
-        if (isFinish) finish()
+        startActivity(
+            intent,
+            ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left)
+                .toBundle()
+        )
+        if (isFinish) this.finish()
     }
 
     protected fun openNavigation(nameActivity: String, isFinish: Boolean) {

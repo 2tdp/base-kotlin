@@ -1,6 +1,8 @@
 package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.language
 
 import android.view.Gravity
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +19,7 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.show
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CHECK_STATE_LANGUAGE
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CURRENT_LANGUAGE
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.FINISH_LANGUAGE
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.IS_SHOW_BACK
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,7 +33,16 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(ActivityLanguageB
     private val viewModel: LanguageActivityViewModel by viewModels()
     private var lang: LanguageModel? = null
 
+    private var isClick = false
+
     override fun setUp() {
+        onBackPressedDispatcher.addCallback(this@LanguageActivity, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                DataLocalManager.setCheck(FINISH_LANGUAGE, false)
+                finish()
+            }
+        })
+
         DataLocalManager.getLanguage(CURRENT_LANGUAGE)?.let { lang = it }
         langAdapter.newInstance(this, object : ICallBackItem {
             override fun callBack(ob: Any, position: Int) {
@@ -41,13 +53,16 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(ActivityLanguageB
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvLanguage.adapter = langAdapter
 
+        binding.ivBack.visibility = if (DataLocalManager.getCheck(IS_SHOW_BACK)) View.VISIBLE else View.GONE
         binding.ivTick.setOnClickListener {
+            if (isClick) return@setOnClickListener
             if (lang != null) {
                 DataLocalManager.setLanguage(CURRENT_LANGUAGE, lang!!)
                 DataLocalManager.setCheck(CHECK_STATE_LANGUAGE, false)
                 if (DataLocalManager.getCheck(FINISH_LANGUAGE)) finish()
                 else startIntent(OnBoardingActivity::class.java.name, true)
             } else showToast(getString(R.string.you_need_pick_a_language), Gravity.CENTER)
+            isClick = true
         }
 
         lifecycleScope.launch {

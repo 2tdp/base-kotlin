@@ -2,6 +2,7 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.demo.MusicEntity
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
 import org.json.JSONArray
@@ -56,6 +57,14 @@ class DataLocalManager {
             return getInstance()!!.mySharedPreferences!!.getIntWithKey(key, -1)
         }
 
+        fun setFloat(count: Float, key: String?) {
+            getInstance()!!.mySharedPreferences!!.putFloatWithKey(key, count)
+        }
+
+        fun getFloat(key: String?): Float {
+            return getInstance()!!.mySharedPreferences!!.getFloatWithKey(key, -1f)
+        }
+
         fun setLong(count: Long, key: String?) {
             getInstance()!!.mySharedPreferences!!.putLongWithKey(key, count)
         }
@@ -72,7 +81,7 @@ class DataLocalManager {
             val strJson = getInstance()!!.mySharedPreferences!!.getStringWithKey(key, "")!!
             var lang: LanguageModel? = null
             try {
-                lang = Gson().fromJson(JSONObject(strJson).toString(), LanguageModel::class.java)
+                lang = Gson().fromJson(JSONObject(strJson).toString(), object : TypeToken<LanguageModel>() {}.type)
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
@@ -92,7 +101,7 @@ class DataLocalManager {
             try {
                 val jsonArray = JSONArray(strJson)
                 for (i in 0 until jsonArray.length()) {
-                    lstTimeStamp.add(jsonArray[i].toString())
+                    lstTimeStamp.add(Gson().fromJson(jsonArray[i].toString(), object : TypeToken<Int>() {}.type))
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
@@ -109,36 +118,12 @@ class DataLocalManager {
             try {
                 val jsonArray = JSONArray(getInstance()!!.mySharedPreferences!!.getStringWithKey(key, ""))
                 for (i in 0 until jsonArray.length()) {
-                    lstBorder.add(Gson().fromJson(jsonArray.getJSONObject(i).toString(), MusicEntity::class.java))
+                    lstBorder.add(Gson().fromJson(jsonArray.getJSONObject(i).toString(), object : TypeToken<MusicEntity>() {}.type))
                 }
             } catch (e: JSONException) {
                 e.printStackTrace()
             }
             return lstBorder
         }
-
-//        fun setListBucket(lstBucket: ArrayList<BucketPicModel>, key: String) {
-//            val gson = Gson()
-//            val jsonArray = gson.toJsonTree(lstBucket).asJsonArray
-//            val json = jsonArray.toString()
-//            getInstance()!!.mySharedPreferences!!.putStringWithKey(key, json)
-//        }
-//
-//        fun getListBucket(key: String): ArrayList<BucketPicModel> {
-//            val gson = Gson()
-//            var jsonObject: JSONObject
-//            val lstBucket: ArrayList<BucketPicModel> = ArrayList()
-//            val strJson = getInstance()!!.mySharedPreferences!!.getStringWithKey(key, "")
-//            try {
-//                val jsonArray = JSONArray(strJson)
-//                for (i in 0 until jsonArray.length()) {
-//                    jsonObject = jsonArray.getJSONObject(i)
-//                    lstBucket.add(gson.fromJson(jsonObject.toString(), BucketPicModel::class.java))
-//                }
-//            } catch (e: JSONException) {
-//                e.printStackTrace()
-//            }
-//            return lstBucket
-//        }
     }
 }

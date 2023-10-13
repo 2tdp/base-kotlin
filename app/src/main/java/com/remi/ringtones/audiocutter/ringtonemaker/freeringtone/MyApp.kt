@@ -9,14 +9,12 @@ import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 
 @HiltAndroidApp
-class MyApp : LocalizationApplication() {
+class MyApp : Application() {
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var ctx: Context
     }
-
-    override fun getDefaultLanguage(context: Context): Locale = Locale.ENGLISH
 
     override fun onCreate() {
         DataLocalManager.init(applicationContext)

@@ -46,6 +46,18 @@ class MySharePreferences(context: Context) {
         return sharedPreferences.getInt(key, defaultInt)
     }
 
+    fun putFloatWithKey(key: String?, value: Float) {
+        val sharedPreferences = context.getSharedPreferences(MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putFloat(key, value)
+        editor.apply()
+    }
+
+    fun getFloatWithKey(key: String?, defaultFloat: Float): Float {
+        val sharedPreferences = context.getSharedPreferences(MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
+        return sharedPreferences.getFloat(key, defaultFloat)
+    }
+
     fun putLongWithKey(key: String?, value: Long) {
         val sharedPreferences = context.getSharedPreferences(MY_SHARED_PREFERENCE, Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()

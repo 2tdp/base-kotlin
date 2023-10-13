@@ -10,9 +10,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.PowerManager
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.Gravity
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -21,7 +25,9 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.util.Util.isOnMainThread
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
 
@@ -37,16 +43,6 @@ fun AppCompatActivity.getTempFile(child: String): File? {
     }
 
     return folder
-}
-
-fun AppCompatActivity.setIntent(nameActivity: String, isFinish: Boolean) {
-    val intent = Intent()
-    intent.component = ComponentName(this, nameActivity)
-    startActivity(
-        intent,
-        ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
-    )
-    if (isFinish) finish()
 }
 
 fun AppCompatActivity.setAnimExit() {
@@ -112,6 +108,45 @@ fun AppCompatActivity.openSettingPermission(action: String) {
     startActivity(intent)
 }
 
+fun AppCompatActivity.actionNotificationListenerSettingPermission(c: Context): Boolean {
+    return NotificationManagerCompat.getEnabledListenerPackages(c).contains(c.packageName)
+}
+
+fun AppCompatActivity.openNotificationSetting(
+    context: Context, nameService: String,
+    activityResultLauncher: ActivityResultLauncher<Intent>
+) {
+    val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+    val showArgs = context.packageName + "/" + nameService
+    intent.apply {
+        putExtra(":settings:fragment_args_key", showArgs)
+        putExtra(
+            ":settings:show_fragment_args",
+            Bundle().apply { putString(":settings:fragment_args_key", showArgs) })
+    }
+    try {
+        activityResultLauncher.launch(intent)
+    } catch (e: Exception) {
+        Toast.makeText(context, "Please open Setting", Toast.LENGTH_SHORT).show()
+    }
+}
+
+@Suppress("DEPRECATION")
+fun makeVibrate(context: Context) {
+    val vibrator: Vibrator
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        vibrator = (context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager).defaultVibrator
+        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+    } else {
+        //deprecated in API 26
+        vibrator = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        vibrator.vibrate(200)
+    }
+}
+
 fun AppCompatActivity.setStatusBarTransparent(context: Context, isVisible: Boolean, colorStatus: Int, colorNavi: Int) {
     val decorView = window.decorView
     window.statusBarColor = colorStatus
@@ -137,8 +172,12 @@ fun AppCompatActivity.setStatusBarTransparent(context: Context, isVisible: Boole
 //            actionBar?.hide()
 //        }
 
+        /**
+         * display above lock screen
+         */
         var flag = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        val manager = applicationContext.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
+        val manager =
+            applicationContext.getSystemService(Context.KEYGUARD_SERVICE) as KeyguardManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
@@ -148,7 +187,10 @@ fun AppCompatActivity.setStatusBarTransparent(context: Context, isVisible: Boole
                     WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or
                     WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         }
-        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        /**
+         * set navigation bar transparent
+         */
+        decorView.systemUiVisibility = flags
         window.addFlags(flag)
         window.navigationBarColor = Color.parseColor("#01ffffff")
         window.statusBarColor = Color.TRANSPARENT

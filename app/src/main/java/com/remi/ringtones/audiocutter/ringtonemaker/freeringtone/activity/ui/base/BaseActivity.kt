@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +20,6 @@ import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
-import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hideKeyboardMain
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setAnimExit

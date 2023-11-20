@@ -29,9 +29,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.util.Util.isOnMainThread
+import com.google.gson.Gson
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
 
 import java.io.File
+
+fun Any?.toJson(): String = Gson().toJson(this)
 
 fun AppCompatActivity.getTempFile(child: String): File? {
     val folder = File(cacheDir, child)

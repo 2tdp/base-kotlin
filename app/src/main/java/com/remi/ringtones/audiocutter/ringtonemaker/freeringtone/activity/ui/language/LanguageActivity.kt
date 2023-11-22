@@ -72,9 +72,7 @@ class LanguageActivity : BaseActivity<ActivityLanguageBinding>(ActivityLanguageB
                     when (it) {
                         is UiState.Loading -> {}
                         is UiState.Error -> {}
-                        is UiState.Success -> {
-                            if (it.data.isNotEmpty()) langAdapter.setData(it.data)
-                        }
+                        is UiState.Success -> langAdapter.submitList(it.data)
                     }
                 }
             }

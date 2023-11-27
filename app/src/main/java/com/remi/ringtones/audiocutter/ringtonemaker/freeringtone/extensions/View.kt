@@ -5,6 +5,14 @@ import android.graphics.Canvas
 import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import android.view.View
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.utils.UnDoubleClick
+
+fun View.setOnUnDoubleClickListener(onUnDoubleClick: (View) -> Unit) {
+    val unDoubleClickListener = UnDoubleClick {
+        onUnDoubleClick(it)
+    }
+    setOnClickListener(unDoubleClickListener)
+}
 
 fun View.loadBitmapFromView(): Bitmap {
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)

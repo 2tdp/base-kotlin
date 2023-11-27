@@ -86,11 +86,10 @@ dependencies {
 
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
 
+    //blur
+    implementation "com.github.mmin18:realtimeblurview:1.2.1"
+
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
-    //change language
-    implementation 'com.akexorcist:localization:1.2.11'
-
 
     //service
     // Import the BoM for the Firebase platform

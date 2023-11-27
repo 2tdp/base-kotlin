@@ -8,7 +8,6 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -21,8 +20,8 @@ import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
-import com.akexorcist.localizationactivity.ui.LocalizationActivity
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.changeLanguage
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hideKeyboardMain
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setAnimExit
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setStatusBarTransparent
@@ -34,6 +33,7 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.viewcustom.Cust
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
@@ -69,21 +69,11 @@ abstract class BaseActivity<B : ViewBinding>(
             decorView.systemUiVisibility = hideSystemBars()
         }
         job = Job()
+        DataLocalManager.getLanguage(CURRENT_LANGUAGE)?.let { changeLanguage(it) }
         setContentView(binding.root)
         w = resources.displayMetrics.widthPixels / 100F
 
         setUp()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (!DataLocalManager.getCheck(CHECK_STATE_LANGUAGE)) {
-            DataLocalManager.getLanguage(CURRENT_LANGUAGE)?.let {
-                DataLocalManager.setCheck(CHECK_STATE_LANGUAGE, true)
-                AppCompatDelegate.setApplicationLocales(LocaleListCompat.create(it.locale))
-            }
-        }
     }
 
     override fun onDestroy() {

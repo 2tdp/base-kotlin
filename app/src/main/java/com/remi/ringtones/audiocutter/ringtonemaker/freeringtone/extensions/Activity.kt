@@ -29,9 +29,19 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.util.Util.isOnMainThread
+import com.google.gson.Gson
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
 
 import java.io.File
+import java.util.Locale
+
+fun Any?.toJson(): String = Gson().toJson(this)
+
+fun AppCompatActivity.changeLanguage(language: LanguageModel) {
+    Locale.setDefault(language.locale)
+    createConfigurationContext(resources.configuration.apply { this.setLocale(language.locale) })
+}
 
 fun AppCompatActivity.getTempFile(child: String): File? {
     val folder = File(cacheDir, child)

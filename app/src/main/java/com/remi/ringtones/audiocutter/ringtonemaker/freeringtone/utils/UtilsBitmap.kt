@@ -15,6 +15,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.util.Log
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.exifinterface.media.ExifInterface
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.callback.ICallBackItem
@@ -29,6 +30,15 @@ import java.io.InputStream
 
 
 object UtilsBitmap {
+
+    fun loadBitmapFromView(view: View): Bitmap? {
+        val b = Bitmap.createBitmap(view.layoutParams.width, view.layoutParams.height, Bitmap.Config.ARGB_8888)
+        view.layout(view.left, view.top, view.right, view.bottom)
+        val c = Canvas(b)
+        c.rotate(view.rotation, view.width.toFloat() / 2, view.height.toFloat() / 2)
+        view.draw(c)
+        return b
+    }
 
     fun drawIconWithPath(canvas: Canvas, path: Path, paint: Paint?, size: Float, x: Int, y: Int) {
         val rectF = RectF()

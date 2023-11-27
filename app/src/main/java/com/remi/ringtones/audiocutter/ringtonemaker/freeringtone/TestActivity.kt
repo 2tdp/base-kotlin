@@ -59,3 +59,16 @@ fun merge(num1: IntArray, m: Int, num2: IntArray, n: Int): MutableList<Int> {
 
     return arrOut
 }
+
+class Solution {
+    fun twoSum(nums: IntArray, target: Int): IntArray {
+        var index = 0
+        while(index < nums.size) {
+            for(i in (index + 1) until nums.size) {
+                if (nums[index] + nums[i] == target) return intArrayOf(index, i)
+            }
+            index++
+        }
+        return intArrayOf(-1, -1)
+    }
+}

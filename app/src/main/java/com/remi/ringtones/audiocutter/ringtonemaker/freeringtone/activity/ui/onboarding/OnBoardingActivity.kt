@@ -9,6 +9,7 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.bas
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.main.MainActivity
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.adapter.DepthPageTransformer
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.ActivityOnBoardingBinding
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setOnUnDoubleClickListener
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.FIRST_INSTALL
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
 import javax.inject.Inject
@@ -39,7 +40,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>(ActivityOnBoa
             }
         })
 
-        binding.tvAction.setOnClickListener {
+        binding.tvAction.setOnUnDoubleClickListener {
             when(binding.viewPager.currentItem) {
                 0 -> {
                     binding.viewPager.setCurrentItem(1, true)

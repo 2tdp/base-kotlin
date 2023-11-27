@@ -24,6 +24,7 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.mai
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.ActivityPermissionBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.createBackground
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.openSettingPermission
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setOnUnDoubleClickListener
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.showToast
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.FIRST_INSTALL
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
@@ -151,7 +152,7 @@ class PermissionActivity: BaseActivity<ActivityPermissionBinding>(ActivityPermis
                 } else binding.scDraw.isChecked = true
             }
         }
-        binding.tvGo.setOnClickListener {
+        binding.tvGo.setOnUnDoubleClickListener {
             val isPer3 = Settings.canDrawOverlays(this@PermissionActivity)
             val isPer1 =
                 ((ActivityCompat.checkSelfPermission(this@PermissionActivity, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)

@@ -7,6 +7,7 @@ import android.app.KeyguardManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
@@ -38,9 +39,23 @@ import java.util.Locale
 
 fun Any?.toJson(): String = Gson().toJson(this)
 
-fun AppCompatActivity.changeLanguage(language: LanguageModel) {
-    Locale.setDefault(language.locale)
-    createConfigurationContext(resources.configuration.apply { this.setLocale(language.locale) })
+fun AppCompatActivity.changeLanguage(context: Context, language: LanguageModel?): Context {
+    language?.let {
+        try {
+            Locale.setDefault(language.locale)
+            return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+                this.setLocale(language.locale)
+            })
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+                this.setLocale(Locale.ENGLISH)
+            })
+        }
+    }
+    return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
+        this.setLocale(Locale.ENGLISH)
+    })
 }
 
 fun AppCompatActivity.getTempFile(child: String): File? {

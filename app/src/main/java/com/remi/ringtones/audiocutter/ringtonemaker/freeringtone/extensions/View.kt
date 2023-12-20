@@ -22,10 +22,23 @@ fun View.loadBitmapFromView(): Bitmap {
     return bitmap
 }
 
-fun View.createBackground(colorArr: IntArray, border: Int, stroke: Int, colorStroke: Int) {
+fun View.createBackground(colorArr: IntArray, border: Float, stroke: Int, colorStroke: Int) {
     background = GradientDrawable().apply {
         shape = GradientDrawable.RECTANGLE
-        cornerRadius = border.toFloat()
+        cornerRadius = border
+        if (stroke != -1) setStroke(stroke, colorStroke)
+
+        if (colorArr.size >= 2) {
+            colors = colorArr
+            gradientType = GradientDrawable.LINEAR_GRADIENT
+        } else setColor(colorArr[0])
+    }
+}
+
+fun View.createBackground(colorArr: IntArray, border: FloatArray, stroke: Int, colorStroke: Int) {
+    background = GradientDrawable().apply {
+        shape = GradientDrawable.RECTANGLE
+        cornerRadii = border
         if (stroke != -1) setStroke(stroke, colorStroke)
 
         if (colorArr.size >= 2) {

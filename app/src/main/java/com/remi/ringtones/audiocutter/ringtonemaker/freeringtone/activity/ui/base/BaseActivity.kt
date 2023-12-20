@@ -3,6 +3,7 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.ba
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -65,7 +66,6 @@ abstract class BaseActivity<B : ViewBinding>(
             decorView.systemUiVisibility = hideSystemBars()
         }
         job = Job()
-        DataLocalManager.getLanguage(CURRENT_LANGUAGE)?.let { changeLanguage(it) }
         setContentView(binding.root)
         w = resources.displayMetrics.widthPixels / 100F
 
@@ -75,6 +75,10 @@ abstract class BaseActivity<B : ViewBinding>(
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(changeLanguage(newBase, DataLocalManager.getLanguage(CURRENT_LANGUAGE)))
     }
 
     protected open fun getDispatchers(): CoroutineContext {
@@ -95,6 +99,17 @@ abstract class BaseActivity<B : ViewBinding>(
 
     protected abstract fun setUp()
 
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+
+        if (isHideNavigation()) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+            window.navigationBarColor = Color.parseColor("#01ffffff")
+            window.statusBarColor = Color.TRANSPARENT
+            decorView.systemUiVisibility = hideSystemBars()
+        }
+    }
+
     private fun hideSystemBars(): Int {
         return (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -106,6 +121,15 @@ abstract class BaseActivity<B : ViewBinding>(
         val intent = Intent()
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.component = ComponentName(this, nameActivity)
+        startActivity(
+            intent,
+            ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left)
+                .toBundle()
+        )
+        if (isFinish) this.finish()
+    }
+
+    fun startIntent(intent: Intent, isFinish: Boolean) {
         startActivity(
             intent,
             ActivityOptions.makeCustomAnimation(this, R.anim.slide_in_right, R.anim.slide_out_left)

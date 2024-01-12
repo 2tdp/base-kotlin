@@ -3,7 +3,9 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions
 import android.content.Context
 import android.graphics.LinearGradient
 import android.graphics.Shader
+import android.text.TextUtils
 import android.util.TypedValue
+import android.view.Gravity
 import android.widget.TextView
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.utils.Utils
 
@@ -26,4 +28,30 @@ fun TextView.setGradient(colors: IntArray) {
         textSize,
         colors, null, Shader.TileMode.CLAMP)
     invalidate()
+}
+
+fun TextView.setScrollText() {
+    try {
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.MARQUEE
+        isFocusable = true
+        isFocusableInTouchMode = true
+        isSingleLine = true
+        marqueeRepeatLimit = -1
+        isHorizontalScrollBarEnabled = true
+        isSelected = true
+        requestFocus()
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+}
+
+fun TextView.setThreeDot(gravity: Gravity) {
+    try {
+        maxLines = 1
+        ellipsize = TextUtils.TruncateAt.END
+        isSingleLine = true
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
 }

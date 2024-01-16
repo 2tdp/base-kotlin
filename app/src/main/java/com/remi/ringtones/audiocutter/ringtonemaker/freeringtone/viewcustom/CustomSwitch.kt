@@ -52,7 +52,7 @@ class CustomSwitch : View {
         sizeThumb = 0.52f * width - padding
 
         paint.color = if (isChecked) ContextCompat.getColor(context, R.color.main_color)
-        else ContextCompat.getColor(context, R.color.gray_light)
+        else ContextCompat.getColor(context, R.color.gray_main2)
         rectF.set(padding, padding / 2f, width.toFloat() - padding, height.toFloat() - padding / 2f)
         canvas.drawRoundRect(rectF, height / 2f, height / 2f, paint)
 
@@ -93,7 +93,3 @@ class CustomSwitch : View {
         invalidate()
     }
 }
-
-
-
-

@@ -5,15 +5,31 @@ import android.graphics.Canvas
 import android.graphics.drawable.GradientDrawable
 import android.util.TypedValue
 import android.view.View
+import android.view.animation.AlphaAnimation
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.utils.UnDoubleClick
 
 fun View.setOnUnDoubleClickListener(onUnDoubleClick: (View) -> Unit) {
-    val unDoubleClickListener = UnDoubleClick {
+    setOnClickListener(UnDoubleClick {
+        applyClickEffect(it)
         onUnDoubleClick(it)
-    }
-    setOnClickListener(unDoubleClickListener)
+    })
 }
 
+fun View.setOnClickEffectListener(onClick: (View) -> Unit) {
+    setOnClickListener {
+        applyClickEffect(it)
+        onClick(it)
+    }
+}
+
+fun applyClickEffect(view: View) {
+    val animation = AlphaAnimation(1.0f, 0.5f) .apply {
+        duration = 155
+        repeatMode = AlphaAnimation.REVERSE
+        repeatCount = 1
+    }
+    view.startAnimation(animation)
+}
 fun View.loadBitmapFromView(): Bitmap {
     val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
     val canvas = Canvas(bitmap)

@@ -15,19 +15,21 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.DialogLoadingBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.changeLanguage
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hideKeyboardMain
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setAnimExit
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setStatusBarTransparent
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setUpDialog
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.showToast
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CURRENT_LANGUAGE
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.viewcustom.CustomLoadingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -38,7 +40,7 @@ abstract class BaseActivity<B : ViewBinding>(
     val bindingFactory: (LayoutInflater) -> B
 ) : AppCompatActivity(), ActivityView, CoroutineScope {
 
-    private var TAG_LOADING = CustomLoadingDialog::class.java.name
+    private var loadingDialog: AlertDialog? = null
 
     lateinit var job: Job
     var w = 0F
@@ -371,29 +373,33 @@ abstract class BaseActivity<B : ViewBinding>(
         showLoading(true)
     }
 
-    override fun showLoading(cancelable: Boolean) {
-        val loadingDialog = CustomLoadingDialog(this@BaseActivity).apply {
-            isCancelable = cancelable
-            setDismissOnBackPress(cancelable)
-        }
+    private fun initDialog(isCancel: Boolean) {
+        val bindingDialog = DialogLoadingBinding.inflate(LayoutInflater.from(this@BaseActivity))
+
+        loadingDialog = AlertDialog.Builder(this@BaseActivity, R.style.SheetDialog).create()
+        loadingDialog?.setUpDialog(bindingDialog.root, isCancel)
         mIsShowLoading = true
-        loadingDialog.show(supportFragmentManager, TAG_LOADING)
+    }
+
+    override fun showLoading(cancelable: Boolean) {
+        Handler(Looper.getMainLooper()).post {
+            if (loadingDialog != null && mIsShowLoading) {
+                loadingDialog?.cancel()
+                loadingDialog = null
+            }
+            initDialog(cancelable)
+        }
     }
 
     override fun hideLoading() {
-        mIsShowLoading = false
-        val loadingDialog = supportFragmentManager.findFragmentByTag(TAG_LOADING)
-        if (loadingDialog is CustomLoadingDialog && loadingDialog.isVisible && loadingDialog.isAdded)
-            loadingDialog.dismiss()
-
         //cho chắc :(
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (!isFinishing && !mIsShowLoading) {
-                val fragment = supportFragmentManager.findFragmentByTag(TAG_LOADING)
-                if (fragment is CustomLoadingDialog && fragment.isVisible && fragment.isAdded)
-                    fragment.dismiss()
+        Handler(Looper.getMainLooper()).post {
+            if (loadingDialog != null && mIsShowLoading && !isFinishing) {
+                loadingDialog?.cancel()
+                loadingDialog = null
             }
-        }, 300)
+            mIsShowLoading = false
+        }
     }
 
     override fun showPopupMessage(msg: String, title: String) {

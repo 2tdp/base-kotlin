@@ -2,8 +2,7 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.la
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.DataLanguage
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.LanguageModel
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

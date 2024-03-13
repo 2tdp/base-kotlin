@@ -1,6 +1,7 @@
-package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language
+package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.ui.language
 
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.MyApp
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.LanguageModel
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CURRENT_LANGUAGE
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
 import kotlinx.coroutines.flow.Flow
@@ -18,9 +19,11 @@ object DataLanguage {
         val f = MyApp.ctx.assets.list("flag_language")
         for (s in f!!) {
             val name =
-                s.replace(".png", "").replaceFirst(s.substring(0, 1), s.substring(0, 1).uppercase())
-            lstLang.add(LanguageModel(name, "flag_language", checkLocale(s),name == currentLang))
+                s.replace(".webp", "").replaceFirst(s.substring(0, 1), s.substring(0, 1).uppercase())
+            if (name == currentLang) continue
+            lstLang.add(LanguageModel(name, "flag_language", checkLocale(s),false))
         }
+        lstLang.add(LanguageModel(currentLang, "flag_language", checkLocale(currentLang), true))
 
         return flow { emit(lstLang) }
     }

@@ -8,6 +8,7 @@ const val MUSIC_DB = "music"
 const val ARTIST_REMI = "nmh-music-ringtone"
 const val LIST_FAVORITE = "LIST_FAVORITE"
 const val ID_MUSIC = "ID_MUSIC"
+const val URL_ASSETS = "file:///android_asset/"
 
 const val MIN_SCALE = 0.75f
 

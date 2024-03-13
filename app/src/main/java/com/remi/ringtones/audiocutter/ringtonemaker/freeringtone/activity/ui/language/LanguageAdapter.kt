@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.LanguageModel
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.callback.ICallBackItem
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.ItemLanguageBinding
 import javax.inject.Inject

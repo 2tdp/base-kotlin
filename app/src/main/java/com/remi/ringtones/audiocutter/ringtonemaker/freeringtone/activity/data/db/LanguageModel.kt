@@ -1,4 +1,4 @@
-package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language
+package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db
 
 import java.util.Locale
 

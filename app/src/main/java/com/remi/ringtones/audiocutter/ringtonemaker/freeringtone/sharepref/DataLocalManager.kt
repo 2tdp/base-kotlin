@@ -4,7 +4,7 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.demo.MusicEntity
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.LanguageModel
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

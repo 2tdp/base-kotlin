@@ -2,9 +2,7 @@ package com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.ActivityOptions
 import android.app.KeyguardManager
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -18,6 +16,9 @@ import android.os.PowerManager
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.Gravity
 import android.view.View
 import android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -32,7 +33,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.util.Util.isOnMainThread
 import com.google.gson.Gson
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
-import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.language.LanguageModel
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.activity.data.db.LanguageModel
 
 import java.io.File
 import java.util.Locale
@@ -56,6 +57,13 @@ fun AppCompatActivity.changeLanguage(context: Context, language: LanguageModel?)
     return context.createConfigurationContext(Configuration(context.resources.configuration).apply {
         this.setLocale(Locale.ENGLISH)
     })
+}
+
+fun AppCompatActivity.getColorText(colors: IntArray, texts: Array<String>): SpannableString {
+    return SpannableString("${texts[0]} ${texts[1]}").apply {
+        setSpan(ForegroundColorSpan(colors[0]), 0, texts[0].length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        setSpan(ForegroundColorSpan(colors[1]), texts[0].length, this.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
 }
 
 fun AppCompatActivity.getTempFile(child: String): File? {

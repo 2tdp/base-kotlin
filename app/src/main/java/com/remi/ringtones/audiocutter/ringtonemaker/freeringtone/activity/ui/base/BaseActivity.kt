@@ -23,6 +23,7 @@ import androidx.viewbinding.ViewBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.DialogLoadingBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.changeLanguage
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.createBackground
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hideKeyboardMain
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setAnimExit
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setStatusBarTransparent
@@ -375,9 +376,13 @@ abstract class BaseActivity<B : ViewBinding>(
 
     private fun initDialog(isCancel: Boolean) {
         val bindingDialog = DialogLoadingBinding.inflate(LayoutInflater.from(this@BaseActivity))
+        bindingDialog.root.createBackground(intArrayOf(Color.WHITE), 3.5f * w, -1, -1)
 
         loadingDialog = AlertDialog.Builder(this@BaseActivity, R.style.SheetDialog).create()
         loadingDialog?.setUpDialog(bindingDialog.root, isCancel)
+
+        bindingDialog.root.layoutParams.width = (73.889f * w).toInt()
+        bindingDialog.root.layoutParams.height = (34.556f * w).toInt()
         mIsShowLoading = true
     }
 

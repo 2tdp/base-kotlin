@@ -25,28 +25,35 @@ class CustomLoadingSplash : View {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private val paintPr = Paint(Paint.ANTI_ALIAS_FLAG)
-    private var rectF = RectF()
-    private var path = Path()
+    private var shaderBg: LinearGradient? = null
+    private var shaderPr: LinearGradient? = null
     private var w = 0f
     private var radius = 0f
-    private var isCreate = true
-    private var isFirstShader = false
     private var max = 100
     private var currentProgress = 0
+    private var stroke = 0f
     private var sizeBg = 0f
-    private var sizePos = 0f
-    private var colorBg = ContextCompat.getColor(context, R.color.black_background)
-    private var colorPrs = intArrayOf()
+    private var sizePr = 0f
+    private var colorBgs = intArrayOf(
+        ContextCompat.getColor(context, R.color.color_FFAD0E),
+        ContextCompat.getColor(context, R.color.color_FFAD0E)
+    )
+    private var colorPrs = intArrayOf(
+        ContextCompat.getColor(context, R.color.color_FFAD0E),
+        ContextCompat.getColor(context, R.color.color_FFDF70),
+        ContextCompat.getColor(context, R.color.color_FFAD0E)
+    )
 
     var isSwipe: ICallBackCheck? = null
 
     init {
         w = resources.displayMetrics.widthPixels / 100f
-        radius = 1.11f * w
-        sizeBg = 1.667f * w
-        sizePos = 1.667f * w
+        radius = 2.778f * w
+        sizeBg = 3.0556f * w
+        sizePr = 2.22f * w
+        stroke = 0.8336f * w
         paint.apply {
-            style = Paint.Style.FILL
+            style = Paint.Style.STROKE
             strokeJoin = Paint.Join.ROUND
             strokeCap = Paint.Cap.ROUND
         }
@@ -57,43 +64,39 @@ class CustomLoadingSplash : View {
         }
     }
 
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-        if (isCreate) {
-            isCreate = false
-            rectF.set(radius, (height - radius) / 2f, width - radius, (height + radius) / 2f)
-            path.addRoundRect(rectF, radius / 2f, radius / 2f, Path.Direction.CW)
-        }
-    }
-
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.clipPath(path)
-
         //draw bg
         paint.apply {
-            strokeWidth = sizeBg
-            color = colorBg
+            strokeWidth = stroke
+            if (shaderBg == null)
+                shaderBg = LinearGradient(0f, 0f, width.toFloat(), height.toFloat(), colorBgs, null, Shader.TileMode.CLAMP)
+            paint.shader = shaderBg
         }
-        canvas.drawLine(radius / 2f, height / 2f, width - radius / 2f, height / 2f, paint)
+        canvas.drawRoundRect(
+            radius / 2f,
+            height / 2f - sizeBg / 2f,
+            width - radius / 2f,
+            height / 2f + sizeBg / 2f,
+            radius, radius,
+            paint
+        )
 
         //draw load
-        if (colorPrs.size == 1)
-            paintPr.apply {
-                shader = null
-                color = colorPrs[0]
-            }
-        else {
-            if (!isFirstShader) {
-                paintPr.shader =
-                    LinearGradient(0f, 0f, width - radius, 0f, colorPrs, null, Shader.TileMode.CLAMP)
-                isFirstShader = true
-            }
-        }
-        paintPr.strokeWidth = sizePos
-        val p = (width - radius / 2f) * currentProgress / max + radius / 2f
-        canvas.drawLine(radius / 2f, height / 2f, p, height / 2f, paintPr)
+        if (shaderPr == null)
+            shaderPr = LinearGradient(0f, 0f, width - stroke, height.toFloat(), colorPrs, null, Shader.TileMode.CLAMP)
+        paintPr.shader = shaderPr
+        paintPr.strokeWidth = sizePr
+        val p = (width - radius / 2) * currentProgress / max
+        canvas.drawRoundRect(
+            radius / 2,
+            height / 2f - sizePr / 2f,
+            p,
+            height / 2f + sizePr / 2f,
+            radius, radius,
+            paintPr
+        )
 
         if (currentProgress < 100) {
             currentProgress++
@@ -119,8 +122,8 @@ class CustomLoadingSplash : View {
         invalidate()
     }
 
-    fun setColorBackground(color: Int) {
-        this.colorBg = color
+    fun setColorBackground(color: IntArray) {
+        this.colorBgs = color
 
         invalidate()
     }

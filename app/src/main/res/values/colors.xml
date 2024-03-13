@@ -20,4 +20,7 @@
     <color name="black_background">#272727</color>
     <color name="black_background_navi">#474747</color>
     <color name="black_background_navi2">#6B1D1D1D</color>
+
+    <color name="color_700BF0">#700BF0</color>
+    <color name="color_868A90">#868A90</color>
 </resources>

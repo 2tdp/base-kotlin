@@ -47,4 +47,22 @@
     <string name="des_onboarding_1"></string>
     <string name="des_onboarding_2"></string>
     <string name="des_onboarding_3"></string>
+
+    //rate
+    <string name="title_rate">How’s your experience so far?</string>
+    <string name="des_rate_0">We’d love to know!</string>
+    <string name="des_rate_1_2_3">Oh, no!</string>
+    <string name="des_rate_4_5">We like you too</string>
+    <string name="exit">Exit</string>
+    <string name="please_give_us_some_feedback">Please give us some feedback</string>
+    <string name="thanks_for_your_feedback">Thanks for your feedback</string>
+    <string name="may_be_later">Maybe later</string>
+    <string name="rate">Rate</string>
+
+    <string name="update_now">Update now</string>
+    <string name="des_update">Please, update app to new version to continue using</string>
+    <string name="title_update">New version available</string>
+    <string name="Thank_you">Thank you</string>
+    <string name="rate_thanks">Rate in app</string>
+    <string name="txt_your_rate">Your rate</string>
 </resources>

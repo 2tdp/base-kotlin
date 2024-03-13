@@ -6,9 +6,11 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +22,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewbinding.ViewBinding
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.R
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.DialogLoadingBinding
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.databinding.DialogUpdateAppBinding
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.changeLanguage
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.createBackground
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.hideKeyboardMain
@@ -30,6 +37,7 @@ import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setS
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.setUpDialog
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.extensions.showToast
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.CURRENT_LANGUAGE
+import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.helpers.TAG
 import com.remi.ringtones.audiocutter.ringtonemaker.freeringtone.sharepref.DataLocalManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -118,6 +126,48 @@ abstract class BaseActivity<B : ViewBinding>(
                 or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+    }
+
+    fun checkUpdate() {
+        //check update is UPDATE_AVAILABLE
+        AppUpdateManagerFactory.create(this).appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)
+            ) {
+                showDialogUpdate()
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                //CHECK THIS if AppUpdateType.FLEXIBLE, otherwise you can skip
+            } else Log.d(TAG, "checkUpdate: ehe")
+        }
+    }
+
+    private fun showDialogUpdate() {
+        val bindingDialog =
+            DialogUpdateAppBinding.inflate(LayoutInflater.from(this@BaseActivity), null, false)
+
+        val dialog = AlertDialog.Builder(this@BaseActivity, R.style.SheetDialog).create()
+        dialog.setUpDialog(bindingDialog.root, false)
+
+        bindingDialog.root.layoutParams.width = (69.96f * w).toInt()
+        bindingDialog.root.layoutParams.height = (84.889f * w).toInt()
+
+        bindingDialog.tvUpdate.setOnClickListener {
+            try {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=$packageName")
+                    )
+                )
+            } catch (anfe: android.content.ActivityNotFoundException) {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                    )
+                )
+            }
+        }
     }
 
     override fun startIntent(nameActivity: String, isFinish: Boolean) {
